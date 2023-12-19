@@ -1,6 +1,7 @@
 import signal
 import socket
 from time import sleep
+import hashlib
 from constants import ALICE_SOCKET, BOB_SOCKET
 
 class Bob () :
@@ -22,7 +23,7 @@ class Bob () :
             self.server_socket.listen(10)
             print("waiting request")
 
-            self.server_socket.accept()
+            self.server_socket = self.server_socket.accept()[0]
             print("connection accepted")
             print("ask connection")
 
@@ -38,11 +39,15 @@ class Bob () :
             print("Bob is online\n")
             sleep(2)
 
-            msg = self.server_socket.recv(4096)
+            msg = self.server_socket.recv(4096)[2:-1]
             print(msg)
-            msg = self.server_socket.recv(4096)
-            print(msg)
-            msg = self.server_socket.recv(4096)
-            print(msg)
+
+            tales = hashlib.sha256(b'Tales').hexdigest()
+            heads = hashlib.sha256(b'Heads').hexdigest()
+
+            if msg == tales :
+                print('You bet Tales')
+            else : print('You bet Heads')
+                  
 
 Bob()

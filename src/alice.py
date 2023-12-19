@@ -1,5 +1,7 @@
 import signal
 import socket
+import random as rd
+import hashlib
 from time import sleep
 from constants import ALICE_SOCKET, BOB_SOCKET
 
@@ -38,7 +40,18 @@ class Alice () :
 
             print("Alice is online\n")
 
-            self.bob_socket.send(str.encode("are you receiving me ?"))
+            pari = rd.randint(0, 1)
+            print(pari)
+            if pari == 0 :
+                  pari = b'Tales'
+            else : pari = b'Heads'
+
+            self.bob_socket.send(str.encode(str(hashlib.sha256(pari).hexdigest())))
+            print(pari)
+
+        
+
+
 
 
 Alice()
